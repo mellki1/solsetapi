@@ -16,6 +16,10 @@ public class BudgetService {
         return budgetRepository.findAll();
     }
 
+    public List<Budget> findByInstallationId(Integer installationId){
+        return budgetRepository.findByInstallationId(installationId);
+    }
+
     public Budget save(Budget budget){
 
         return budgetRepository.save(budget);

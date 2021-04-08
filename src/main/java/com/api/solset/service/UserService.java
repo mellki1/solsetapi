@@ -1,20 +1,31 @@
 package com.api.solset.service;
 
+import com.api.solset.dto.UserDTO;
 import com.api.solset.model.User;
 import com.api.solset.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
-    public List<User> findAll(){
-        return userRepository.findAll();
+    @Autowired
+    private ClientService clientService;
+
+    public List<UserDTO> findAll(){
+        List<UserDTO> userDTOList = new ArrayList<>();
+        for (User user : userRepository.findAll()){
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUser(user);
+            userDTO.setClients(clientService.findByUserId(user.getId()));
+            userDTOList.add(userDTO);
+        }
+        return userDTOList;
     }
 
     public User save(User user){
