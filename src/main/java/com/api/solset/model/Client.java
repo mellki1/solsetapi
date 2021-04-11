@@ -12,7 +12,7 @@ public class Client extends AbstractEntity {
     private String firstPhoneNumber;
     private String secondPhoneNumber;
     private String email;
-    private Integer userId;
+    private Long userId;
 
     public PersonType getPersonType() {
         return personType;
@@ -70,11 +70,11 @@ public class Client extends AbstractEntity {
         this.email = email;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 }

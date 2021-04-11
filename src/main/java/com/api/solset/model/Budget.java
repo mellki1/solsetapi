@@ -10,5 +10,53 @@ public class Budget extends AbstractEntity {
     private Integer proposalNumber;
     private Integer laborValue;
     private Integer value;
-    private Integer installationId;
+    private Long installationId;
+
+    public Date getUpdatingDate() {
+        return updatingDate;
+    }
+
+    public void setUpdatingDate(Date updatingDate) {
+        this.updatingDate = updatingDate;
+    }
+
+    public String getSituation() {
+        return situation;
+    }
+
+    public void setSituation(String situation) {
+        this.situation = situation;
+    }
+
+    public Integer getProposalNumber() {
+        return proposalNumber;
+    }
+
+    public void setProposalNumber(Integer proposalNumber) {
+        this.proposalNumber = proposalNumber;
+    }
+
+    public Integer getLaborValue() {
+        return laborValue;
+    }
+
+    public void setLaborValue(Integer laborValue) {
+        this.laborValue = laborValue;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
+    public Long getInstallationId() {
+        return installationId;
+    }
+
+    public void setInstallationId(Long installationId) {
+        this.installationId = installationId;
+    }
 }

@@ -11,7 +11,7 @@ import java.util.Objects;
 public class AbstractEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @Override
     public boolean equals(Object o) {
@@ -26,11 +26,11 @@ public class AbstractEntity implements Serializable {
         return Objects.hash(id);
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

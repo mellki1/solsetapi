@@ -12,4 +12,20 @@ public class InstallationDTO {
         this.installation = installation;
         this.budgets = budgets;
     }
+
+    public Installation getInstallation() {
+        return installation;
+    }
+
+    public void setInstallation(Installation installation) {
+        this.installation = installation;
+    }
+
+    public List<Budget> getBudgets() {
+        return budgets;
+    }
+
+    public void setBudgets(List<Budget> budgets) {
+        this.budgets = budgets;
+    }
 }

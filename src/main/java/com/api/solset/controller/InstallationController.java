@@ -30,7 +30,7 @@ public class InstallationController{
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id){
+    public ResponseEntity<?> delete(@PathVariable Long id){
         installationService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

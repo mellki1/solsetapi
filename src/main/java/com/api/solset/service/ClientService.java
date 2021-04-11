@@ -17,11 +17,16 @@ public class ClientService {
     @Autowired
     private InstallationService installationService;
 
-    public List<Client> findAll(){
-        return clientRepository.findAll();
+    public List<ClientDTO> findAll(){
+        List<ClientDTO> clientDTOList = new ArrayList<>();
+        for (Client client : clientRepository.findAll()){
+            ClientDTO clientDTO = new ClientDTO(client, installationService.findByClientId(client.getId()));
+            clientDTOList.add(clientDTO);
+        }
+        return clientDTOList;
     }
 
-    public List<ClientDTO> findByUserId(Integer userId){
+    public List<ClientDTO> findByUserId(Long userId){
         List<ClientDTO> clientDTOList = new ArrayList<>();
         for (Client client : clientRepository.findByUserId(userId)){
             ClientDTO clientDTO = new ClientDTO(client, installationService.findByClientId(client.getId()));
@@ -39,7 +44,7 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
-    public void delete(Integer id){
+    public void delete(Long id){
         clientRepository.deleteById(id);
     }
 

@@ -14,7 +14,7 @@ public class Installation extends AbstractEntity {
     private String address2;
     private String city;
     private String state;
-    private Integer clientId;
+    private Long clientId;
 
     public String getStructure() {
         return structure;
@@ -96,11 +96,11 @@ public class Installation extends AbstractEntity {
         this.state = state;
     }
 
-    public Integer getClientId() {
+    public Long getClientId() {
         return clientId;
     }
 
-    public void setClientId(Integer clientId) {
+    public void setClientId(Long clientId) {
         this.clientId = clientId;
     }
 }

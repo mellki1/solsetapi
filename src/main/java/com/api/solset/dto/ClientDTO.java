@@ -11,4 +11,20 @@ public class ClientDTO {
         this.client = client;
         this.installations = installations;
     }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public List<InstallationDTO> getInstallations() {
+        return installations;
+    }
+
+    public void setInstallations(List<InstallationDTO> installations) {
+        this.installations = installations;
+    }
 }

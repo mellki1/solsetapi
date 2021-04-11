@@ -18,11 +18,16 @@ public class InstallationService {
     @Autowired
     private BudgetService budgetService;
 
-    public List<Installation> findAll(){
-        return installationRepository.findAll();
+    public List<InstallationDTO> findAll(){
+        List<InstallationDTO> installationDTOList = new ArrayList<>();
+        for (Installation installation : installationRepository.findAll()){
+            InstallationDTO installationDTO = new InstallationDTO(installation, budgetService.findByInstallationId(installation.getId()));
+            installationDTOList.add(installationDTO);
+        }
+        return installationDTOList;
     }
 
-    public List<InstallationDTO> findByClientId(Integer clientId){
+    public List<InstallationDTO> findByClientId(Long clientId){
         List<InstallationDTO> installationDTOList = new ArrayList<>();
         for (Installation installation : installationRepository.findByClientId(clientId)){
             InstallationDTO installationDTO = new InstallationDTO(installation, budgetService.findByInstallationId(installation.getId()));
@@ -40,7 +45,7 @@ public class InstallationService {
         return installationRepository.save(installation);
     }
 
-    public void delete(Integer id){
+    public void delete(Long id){
         installationRepository.deleteById(id);
     }
 }

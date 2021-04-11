@@ -16,7 +16,7 @@ public class BudgetService {
         return budgetRepository.findAll();
     }
 
-    public List<Budget> findByInstallationId(Integer installationId){
+    public List<Budget> findByInstallationId(Long installationId){
         return budgetRepository.findByInstallationId(installationId);
     }
 
@@ -30,7 +30,7 @@ public class BudgetService {
         return budgetRepository.save(budget);
     }
 
-    public void delete(Integer id){
+    public void delete(Long id){
         budgetRepository.deleteById(id);
     }
 

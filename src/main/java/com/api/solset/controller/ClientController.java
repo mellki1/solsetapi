@@ -20,7 +20,7 @@ public class ClientController {
     }
 
     @GetMapping("/seller/{id}")
-    public ResponseEntity<?> findByUserId(@PathVariable Integer id){
+    public ResponseEntity<?> findByUserId(@PathVariable Long id){
         return new ResponseEntity<>(clientService.findByUserId(id), HttpStatus.OK);
     }
 
@@ -35,7 +35,7 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id){
+    public ResponseEntity<?> delete(@PathVariable Long id){
         clientService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
