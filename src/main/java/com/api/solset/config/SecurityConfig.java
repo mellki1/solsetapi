@@ -11,18 +11,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .httpBasic();
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.inMemoryAuthentication()
-                .withUser("user").password("{noop}user").roles("USER")
-                .and()
-                .withUser("admin").password("{noop}admin").roles("USER", "ADMIN");
+        http.cors()
+            .and()
+            .authorizeRequests()
+            .anyRequest()
+            .permitAll()
+            .and()
+            .httpBasic();
     }
 }
