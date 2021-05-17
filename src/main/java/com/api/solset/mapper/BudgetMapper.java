@@ -12,5 +12,6 @@ import java.util.List;
 public abstract class BudgetMapper {
     public static final BudgetMapper INSTANCE = Mappers.getMapper(BudgetMapper.class);
     public abstract Budget toBudget(BudgetRequestDTO budgetRequestDTO);
+    public abstract BudgetResponseDTO toBudgetResponseDTO(Budget budget);
     public abstract List<BudgetResponseDTO> toBudgetResponseDTOList(List<Budget> budgetList);
 }
