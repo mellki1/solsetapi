@@ -1,33 +1,49 @@
 package com.api.solset.service;
 
+import com.api.solset.dto.BudgetRequestDTO;
+import com.api.solset.dto.BudgetResponseDTO;
+import com.api.solset.mapper.BudgetMapper;
 import com.api.solset.model.Budget;
 import com.api.solset.repository.BudgetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
 public class BudgetService {
 
     @Autowired
-    BudgetRepository budgetRepository;
+    private BudgetRepository budgetRepository;
 
-    public List<Budget> findAll(){
+    @Autowired
+    private InstallationService installationService;
+
+    public List<Budget> listAll(){
         return budgetRepository.findAll();
     }
 
-    public List<Budget> findByInstallationId(Long installationId){
-        return budgetRepository.findByInstallationId(installationId);
+    public Budget findByIdOrElseThrow(Long id){
+        return budgetRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Budget not found"));
     }
 
-    public Budget save(Budget budget){
-
-        return budgetRepository.save(budget);
+    public List<BudgetResponseDTO> findByInstallationId(Long installationId){
+        return BudgetMapper.INSTANCE.toBudgetResponseDTOList(budgetRepository.findAll());
     }
 
-    public Budget update(Budget budget){
-        this.delete(budget.getId());
-        return budgetRepository.save(budget);
+    public Budget save(BudgetRequestDTO budgetDTO){
+        return budgetRepository.save(
+                BudgetMapper.INSTANCE.toBudget(budgetDTO)
+        );
+    }
+
+    public void update(BudgetRequestDTO budgetRequestDTO){
+        Budget budgetSaved = findByIdOrElseThrow(budgetRequestDTO.getId());
+        Budget newBudget = BudgetMapper.INSTANCE.toBudget(budgetRequestDTO);
+        newBudget.setId(budgetSaved.getId());
+        budgetRepository.save(newBudget);
     }
 
     public void delete(Long id){

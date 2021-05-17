@@ -1,10 +1,14 @@
 package com.api.solset.service;
 
-import com.api.solset.dto.ClientDTO;
+import com.api.solset.dto.ClientRequestDTO;
+import com.api.solset.dto.ClientResponseDTO;
+import com.api.solset.mapper.ClientMapper;
 import com.api.solset.model.Client;
 import com.api.solset.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,36 +21,66 @@ public class ClientService {
     @Autowired
     private InstallationService installationService;
 
-    public List<ClientDTO> findAll(){
-        List<ClientDTO> clientDTOList = new ArrayList<>();
+    public List<Client> listAll(){
+        return clientRepository.findAll();
+    }
+
+    public List<ClientResponseDTO> listAllWithRelationship(){
+        List<ClientResponseDTO> clientResponseDTOList = new ArrayList<>();
         for (Client client : clientRepository.findAll()){
-            ClientDTO clientDTO = new ClientDTO(client, installationService.findByClientId(client.getId()));
-            clientDTOList.add(clientDTO);
+            ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
+            clientResponseDTO.setInstallations(installationService.findByClientId(clientResponseDTO.getId()));
+            clientResponseDTOList.add(clientResponseDTO);
         }
-        return clientDTOList;
+        return clientResponseDTOList;
     }
 
-    public List<ClientDTO> findByUserId(Long userId){
-        List<ClientDTO> clientDTOList = new ArrayList<>();
+    public Client findByIdOrElseThrow(Long id){
+        return clientRepository.findById(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
+    }
+
+
+    public ClientResponseDTO findByIdOrElseThrowDto(Long id){
+        Client client = clientRepository.findById(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
+        ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
+        clientResponseDTO.setInstallations(installationService.findByClientId(client.getId()));
+        return clientResponseDTO;
+    }
+
+    public ClientResponseDTO findByIdOrElseThrowWithRelationship(Long id){
+        Client client = clientRepository.findById(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
+        ClientResponseDTO clientRequestDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
+        clientRequestDTO.setInstallations(installationService.findByClientId(clientRequestDTO.getId()));
+        return clientRequestDTO;
+    }
+
+    public List<ClientResponseDTO> findByUserId(Long userId){
+        List<ClientResponseDTO> clientResponseDTOList = new ArrayList<>();
         for (Client client : clientRepository.findByUserId(userId)){
-            ClientDTO clientDTO = new ClientDTO(client, installationService.findByClientId(client.getId()));
-            clientDTOList.add(clientDTO);
+            ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
+            clientResponseDTO.setInstallations(installationService.findByClientId(clientResponseDTO.getId()));
+            clientResponseDTOList.add(clientResponseDTO);
         }
-        return clientDTOList;
+        return clientResponseDTOList;
     }
 
-    public Client save(Client client){
-        return clientRepository.save(client);
+    public Client save(ClientRequestDTO clientRequestDTO){
+        return clientRepository.save(
+                ClientMapper.INSTANCE.toClient(clientRequestDTO)
+        );
     }
 
-    public Client update(Client client){
-        this.delete(client.getId());
-        return clientRepository.save(client);
+    public void update(ClientRequestDTO clientRequestDTO){
+        Client clientSaved = findByIdOrElseThrow(clientRequestDTO.getId());
+        Client newClient = ClientMapper.INSTANCE.toClient(clientRequestDTO);
+        newClient.setId(clientSaved.getId());
+        clientRepository.save(newClient);
     }
 
     public void delete(Long id){
         clientRepository.deleteById(id);
     }
-
-
 }

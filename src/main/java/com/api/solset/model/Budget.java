@@ -1,62 +1,28 @@
 package com.api.solset.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
-import java.sql.Date;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.util.Date;
 
 @Entity
-public class Budget extends AbstractEntity {
-    private Date updatingDate;
-    private String situation;
-    private Integer proposalNumber;
-    private Integer laborValue;
-    private Integer value;
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class Budget {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Long installationId;
-
-    public Date getUpdatingDate() {
-        return updatingDate;
-    }
-
-    public void setUpdatingDate(Date updatingDate) {
-        this.updatingDate = updatingDate;
-    }
-
-    public String getSituation() {
-        return situation;
-    }
-
-    public void setSituation(String situation) {
-        this.situation = situation;
-    }
-
-    public Integer getProposalNumber() {
-        return proposalNumber;
-    }
-
-    public void setProposalNumber(Integer proposalNumber) {
-        this.proposalNumber = proposalNumber;
-    }
-
-    public Integer getLaborValue() {
-        return laborValue;
-    }
-
-    public void setLaborValue(Integer laborValue) {
-        this.laborValue = laborValue;
-    }
-
-    public Integer getValue() {
-        return value;
-    }
-
-    public void setValue(Integer value) {
-        this.value = value;
-    }
-
-    public Long getInstallationId() {
-        return installationId;
-    }
-
-    public void setInstallationId(Long installationId) {
-        this.installationId = installationId;
-    }
+    private Integer laborValue;
+    private Integer proposalNumber;
+    private String situation;
+    private Date updatingDate;
+    private Integer value;
 }

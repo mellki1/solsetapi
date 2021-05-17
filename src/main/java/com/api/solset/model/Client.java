@@ -1,10 +1,24 @@
 package com.api.solset.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import util.PersonType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
-public class Client extends AbstractEntity {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class Client {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long Id;
     private PersonType personType;
     private String cnpj;
     private String cpf;
@@ -13,68 +27,4 @@ public class Client extends AbstractEntity {
     private String secondPhoneNumber;
     private String email;
     private Long userId;
-
-    public PersonType getPersonType() {
-        return personType;
-    }
-
-    public void setPersonType(PersonType personType) {
-        this.personType = personType;
-    }
-
-    public String getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getFirstPhoneNumber() {
-        return firstPhoneNumber;
-    }
-
-    public void setFirstPhoneNumber(String firstPhoneNumber) {
-        this.firstPhoneNumber = firstPhoneNumber;
-    }
-
-    public String getSecondPhoneNumber() {
-        return secondPhoneNumber;
-    }
-
-    public void setSecondPhoneNumber(String secondPhoneNumber) {
-        this.secondPhoneNumber = secondPhoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 }

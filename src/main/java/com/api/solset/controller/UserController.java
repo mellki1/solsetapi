@@ -1,11 +1,14 @@
 package com.api.solset.controller;
 
+import com.api.solset.dto.UserRequestDTO;
+import com.api.solset.dto.UserResponseDTO;
 import com.api.solset.model.User;
 import com.api.solset.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("user")
@@ -15,18 +18,24 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<?> findAll(){
-        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<User>> findAll(){
+        return ResponseEntity.ok(userService.listAll());
+    }
+
+    @GetMapping("/full")
+    public ResponseEntity<List<UserResponseDTO>> listAllWithRelationship(){
+        return ResponseEntity.ok(userService.listAllWithRelationship());
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody User user){
-        return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
+    public ResponseEntity<User> save(@RequestBody UserRequestDTO userRequestDTO){
+        return new ResponseEntity<>(userService.save(userRequestDTO), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody User user){
-        return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
+    public ResponseEntity<User> update(@RequestBody UserRequestDTO userRequestDTO){
+        userService.update(userRequestDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

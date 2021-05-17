@@ -1,11 +1,13 @@
 package com.api.solset.controller;
 
+import com.api.solset.dto.BudgetRequestDTO;
 import com.api.solset.model.Budget;
 import com.api.solset.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("budget")
@@ -15,18 +17,24 @@ public class BudgetController {
     private BudgetService budgetService;
 
     @GetMapping
-    public ResponseEntity<?> findAll(){
-        return new ResponseEntity<>(budgetService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<Budget>> findAll(){
+        return ResponseEntity.ok(budgetService.listAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Budget> findById(@PathVariable Long id){
+        return ResponseEntity.ok(budgetService.findByIdOrElseThrow(id));
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Budget budget){
-        return new ResponseEntity<>(budgetService.save(budget), HttpStatus.OK);
+    public ResponseEntity<Budget> save(@RequestBody BudgetRequestDTO budgetDTO){
+        return new ResponseEntity<>(budgetService.save(budgetDTO), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody Budget budget){
-        return new ResponseEntity<>(budgetService.update(budget), HttpStatus.OK);
+    public ResponseEntity<Budget> update(@RequestBody BudgetRequestDTO budgetDTO){
+        budgetService.update(budgetDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
