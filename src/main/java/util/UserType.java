@@ -1,7 +1,7 @@
 package util;
 
 public enum UserType {
-    SELLER("SELLER");
+    VENDEDOR("Vendedor"), ADMINISTRADOR("Administrador"),  ORCAMENTISTA("Orçamentista");
 
     public String userType;
 

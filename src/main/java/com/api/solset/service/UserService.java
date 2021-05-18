@@ -42,9 +42,8 @@ public class UserService {
     }
 
     public User save(UserRequestDTO userRequestDTO){
-        return userRepository.save(
-                UserMapper.INSTANCE.toUser(userRequestDTO)
-        );
+        User user = UserMapper.INSTANCE.toUser(userRequestDTO);
+        return userRepository.save(user);
     }
 
     public void update(UserRequestDTO userRequestDTO){

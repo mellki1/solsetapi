@@ -17,7 +17,7 @@ import javax.persistence.Id;
 @Data
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String cpf;
     private String name;
@@ -26,5 +26,5 @@ public class User {
     private String email;
     private String password;
     private UserType userType;
-    private String firebaseHash;
+    private String requestToken;
 }

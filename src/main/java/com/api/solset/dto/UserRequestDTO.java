@@ -13,5 +13,5 @@ public class UserRequestDTO {
     private String email;
     private String password;
     private UserType userType;
-    private String firebaseHash;
+    private String requestToken;
 }

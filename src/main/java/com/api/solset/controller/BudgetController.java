@@ -16,21 +16,25 @@ public class BudgetController {
     @Autowired
     private BudgetService budgetService;
 
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<List<Budget>> findAll(){
         return ResponseEntity.ok(budgetService.listAll());
     }
 
+    @CrossOrigin
     @GetMapping("/{id}")
     public ResponseEntity<Budget> findById(@PathVariable Long id){
         return ResponseEntity.ok(budgetService.findByIdOrElseThrow(id));
     }
 
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<Budget> save(@RequestBody BudgetRequestDTO budgetDTO){
         return new ResponseEntity<>(budgetService.save(budgetDTO), HttpStatus.CREATED);
     }
 
+    @CrossOrigin
     @PutMapping
     public ResponseEntity<Budget> update(@RequestBody BudgetRequestDTO budgetDTO){
         budgetService.update(budgetDTO);

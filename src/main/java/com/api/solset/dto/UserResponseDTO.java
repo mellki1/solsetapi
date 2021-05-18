@@ -15,6 +15,6 @@ public class UserResponseDTO {
     private String email;
     private String password;
     private UserType userType;
-    private String firebaseHash;
+    private String requestToken;
     private List<ClientResponseDTO> clients;
 }
