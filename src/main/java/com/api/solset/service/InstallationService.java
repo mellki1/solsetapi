@@ -1,9 +1,12 @@
 package com.api.solset.service;
 
+import com.api.solset.dto.ClientResponseDTO;
 import com.api.solset.dto.InstallationRequestDTO;
 import com.api.solset.dto.InstallationResponseDTO;
 import com.api.solset.mapper.InstallationMapper;
+import com.api.solset.model.Client;
 import com.api.solset.model.Installation;
+import com.api.solset.model.User;
 import com.api.solset.repository.InstallationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,9 @@ public class InstallationService {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private UserService userService;
+
     public List<Installation> findAll(){
         return installationRepository.findAll();
     }
@@ -39,18 +45,20 @@ public class InstallationService {
         return installationResponseDTOList;
     }
 
+    public List<InstallationResponseDTO> findByUserRequestToken(String requestToken){
+        List<InstallationResponseDTO> installationResponseDTOList = new ArrayList<>();
+        for (Installation installation : installationRepository.findByRequestToken(requestToken)){
+            InstallationResponseDTO installationResponseDTO = InstallationMapper.INSTANCE.toInstallationResponseDTO(installation);
+            installationResponseDTO.setClient(clientService.findByIdOrElseThrowDto(installation.getClientId()));
+            installationResponseDTO.setBudgets(budgetService.findByInstallationId(installation.getId()));
+            installationResponseDTOList.add(installationResponseDTO);
+        }
+        return installationResponseDTOList;
+    }
+
     public Installation findByIdOrElseThrow(Long id){
         return installationRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Installation not found"));
-    }
-
-    public InstallationResponseDTO findByIdOrElseThrowWithRelationship(Long id){
-        Installation installation = installationRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Installation not found"));
-        InstallationResponseDTO installationResponseDTO = InstallationMapper.INSTANCE.toInstallationResponseDTO(installation);
-        installationResponseDTO.setBudgets(budgetService.findByInstallationId(installation.getId()));
-        installationResponseDTO.setClient(clientService.findByIdOrElseThrowDto(installation.getClientId()));
-        return installationResponseDTO;
     }
 
     public List<InstallationResponseDTO> findByClientId(Long clientId){
@@ -67,8 +75,8 @@ public class InstallationService {
         return installationRepository.save(installation);
     }
 
-    public void update(InstallationRequestDTO installationRequestDTO){
-        Installation installationSaved = findByIdOrElseThrow(installationRequestDTO.getId());
+    public void update(Long id, InstallationRequestDTO installationRequestDTO){
+        Installation installationSaved = findByIdOrElseThrow(id);
         Installation newInstallation = InstallationMapper.INSTANCE.toInstallation(installationRequestDTO);
         newInstallation.setId(installationSaved.getId());
         installationRepository.save(newInstallation);

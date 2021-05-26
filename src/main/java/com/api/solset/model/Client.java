@@ -17,8 +17,8 @@ import javax.persistence.Id;
 @Data
 public class Client {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private PersonType personType;
     private String cnpj;
     private String cpf;
@@ -26,5 +26,5 @@ public class Client {
     private String firstPhoneNumber;
     private String secondPhoneNumber;
     private String email;
-    private Long userId;
+    private String requestToken;
 }

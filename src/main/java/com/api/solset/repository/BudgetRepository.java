@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
     List<Budget> findByInstallationId(Long installationId);
+
+    List<Budget> findByRequestToken(String requestToken);
 }

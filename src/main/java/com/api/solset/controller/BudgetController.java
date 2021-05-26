@@ -1,6 +1,7 @@
 package com.api.solset.controller;
 
 import com.api.solset.dto.BudgetRequestDTO;
+import com.api.solset.dto.BudgetResponseDTO;
 import com.api.solset.model.Budget;
 import com.api.solset.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ public class BudgetController {
     }
 
     @CrossOrigin
+    @GetMapping("/full")
+    public ResponseEntity<List<BudgetResponseDTO>> findAllWithRelationship(@RequestParam(value = "requestToken") String requestToken){
+        return ResponseEntity.ok(budgetService.findByRequestToken(requestToken));
+    }
+
+    @CrossOrigin
     @GetMapping("/{id}")
     public ResponseEntity<Budget> findById(@PathVariable Long id){
         return ResponseEntity.ok(budgetService.findByIdOrElseThrow(id));
@@ -41,6 +48,7 @@ public class BudgetController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @CrossOrigin
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         budgetService.delete(id);

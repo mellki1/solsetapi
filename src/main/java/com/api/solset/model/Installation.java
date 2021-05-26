@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Builder
@@ -16,12 +18,15 @@ import javax.persistence.Id;
 @Data
 public class Installation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String structure;
     private String technology;
     private String classes;
     private Boolean financing;
+    private String voltage;
+    private String fileList;
+    private String createdDate;
     private String observations;
     private String postalCode;
     private String address1;
@@ -29,4 +34,5 @@ public class Installation {
     private String city;
     private String state;
     private Long clientId;
+    private String requestToken;
 }

@@ -17,12 +17,13 @@ import java.util.Date;
 @Data
 public class Budget {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long installationId;
     private Integer laborValue;
     private Integer proposalNumber;
     private String situation;
-    private Date updatingDate;
+    private String updateDate;
     private Integer value;
+    private String requestToken;
 }

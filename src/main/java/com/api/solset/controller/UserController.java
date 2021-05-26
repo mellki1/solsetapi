@@ -17,30 +17,39 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @CrossOrigin
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){
-        return ResponseEntity.ok(userService.listAll());
+    public ResponseEntity<?> findAll(@RequestParam(name = "requestToken", required = false) String requestToken){
+        if (requestToken!= null){
+            return ResponseEntity.ok(userService.findByRequestToken(requestToken));
+        }else{
+            return ResponseEntity.ok(userService.listAll());
+        }
     }
 
+    @CrossOrigin
     @GetMapping("/full")
     public ResponseEntity<List<UserResponseDTO>> listAllWithRelationship(){
         return ResponseEntity.ok(userService.listAllWithRelationship());
     }
 
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<User> save(@RequestBody UserRequestDTO userRequestDTO){
         return new ResponseEntity<>(userService.save(userRequestDTO), HttpStatus.OK);
     }
 
-    @PutMapping
+    @CrossOrigin
+    @PutMapping("/{id}")
     public ResponseEntity<User> update(@RequestBody UserRequestDTO userRequestDTO){
         userService.update(userRequestDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
-        userService.delete(id);
+    @CrossOrigin
+    @DeleteMapping()
+    public ResponseEntity<?> delete(@RequestParam (name = "requestToken", required = true) String userToken){
+        userService.delete(userToken);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

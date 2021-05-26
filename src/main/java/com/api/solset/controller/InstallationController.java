@@ -25,20 +25,13 @@ public class InstallationController{
 
     @CrossOrigin
     @GetMapping("/full")
-    public ResponseEntity<List<InstallationResponseDTO>> findAllWithRelationship(){
-        return ResponseEntity.ok(installationService.findAllWithRelationship());
-    }
+    public ResponseEntity<List<InstallationResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken") String requestToken){
+        if (requestToken !=null){
+            return ResponseEntity.ok(installationService.findByUserRequestToken(requestToken));
+        }else{
+            return ResponseEntity.ok(installationService.findAllWithRelationship());
+        }
 
-    @CrossOrigin
-    @GetMapping("/{id}")
-    public ResponseEntity<Installation> findById(@PathVariable Long id){
-        return ResponseEntity.ok(installationService.findByIdOrElseThrow(id));
-    }
-
-    @CrossOrigin
-    @GetMapping("/{id}/full")
-    public ResponseEntity<InstallationResponseDTO> findByIdOrElseThrowWithRelationship(@PathVariable Long id){
-        return ResponseEntity.ok(installationService.findByIdOrElseThrowWithRelationship(id));
     }
 
     @CrossOrigin
@@ -47,10 +40,9 @@ public class InstallationController{
         return new ResponseEntity<>(installationService.save(installation), HttpStatus.OK);
     }
 
-    @CrossOrigin
-    @PutMapping
-    public ResponseEntity<?> update(@RequestBody InstallationRequestDTO installationRequestDTO){
-        installationService.update(installationRequestDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody InstallationRequestDTO installationRequestDTO){
+        installationService.update(id, installationRequestDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

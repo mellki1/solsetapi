@@ -41,6 +41,17 @@ public class UserService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Budget not found"));
     }
 
+    public User findUserByRequestToken(String requestToken){
+        return userRepository.findByRequestToken(requestToken);
+    }
+
+    public UserResponseDTO findByRequestToken(String requestToken){
+        User user =  userRepository.findByRequestToken(requestToken);
+        UserResponseDTO userResponseDTO = UserMapper.INSTANCE.toUserResponseDTO(user);
+        userResponseDTO.setClients(clientService.findByUserRequestToken(userResponseDTO.getRequestToken()));
+        return userResponseDTO;
+    }
+
     public User save(UserRequestDTO userRequestDTO){
         User user = UserMapper.INSTANCE.toUser(userRequestDTO);
         return userRepository.save(user);
@@ -53,7 +64,8 @@ public class UserService {
         userRepository.save(newBudget);
     }
 
-    public void delete(Long id){
-        userRepository.deleteById(id);
+    public void delete(String userToken){
+        User user = this.findUserByRequestToken(userToken);
+        userRepository.deleteById(user.getId());
     }
 }

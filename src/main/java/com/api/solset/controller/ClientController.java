@@ -25,8 +25,8 @@ public class ClientController {
 
     @CrossOrigin
     @GetMapping("/full")
-    public ResponseEntity<List<ClientResponseDTO>> findAllWithRelationship(){
-        return ResponseEntity.ok(clientService.listAllWithRelationship());
+    public ResponseEntity<List<ClientResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken") String requestToken){
+        return ResponseEntity.ok(clientService.listAllWithRelationshipByToken(requestToken));
     }
 
     @CrossOrigin
@@ -42,9 +42,9 @@ public class ClientController {
     }
 
     @CrossOrigin
-    @GetMapping("/seller/{id}")
-    public ResponseEntity<List<ClientResponseDTO>> findByUserId(@PathVariable Long id){
-        return ResponseEntity.ok(clientService.findByUserId(id));
+    @GetMapping("/seller")
+    public ResponseEntity<List<ClientResponseDTO>> findByUserId(@RequestParam(name = "requestToken") String requestToken){
+        return ResponseEntity.ok(clientService.findByUserRequestToken(requestToken));
     }
 
     @CrossOrigin
@@ -54,7 +54,7 @@ public class ClientController {
     }
 
     @CrossOrigin
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody ClientRequestDTO clientRequestDTO){
         clientService.update(clientRequestDTO);
         return new ResponseEntity<>(HttpStatus.OK);

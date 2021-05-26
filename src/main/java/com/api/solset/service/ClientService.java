@@ -2,8 +2,10 @@ package com.api.solset.service;
 
 import com.api.solset.dto.ClientRequestDTO;
 import com.api.solset.dto.ClientResponseDTO;
+import com.api.solset.dto.UserResponseDTO;
 import com.api.solset.mapper.ClientMapper;
 import com.api.solset.model.Client;
+import com.api.solset.model.User;
 import com.api.solset.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,9 @@ public class ClientService {
     @Autowired
     private InstallationService installationService;
 
+    @Autowired
+    private UserService userService;
+
     public List<Client> listAll(){
         return clientRepository.findAll();
     }
@@ -28,6 +33,16 @@ public class ClientService {
     public List<ClientResponseDTO> listAllWithRelationship(){
         List<ClientResponseDTO> clientResponseDTOList = new ArrayList<>();
         for (Client client : clientRepository.findAll()){
+            ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
+            clientResponseDTO.setInstallations(installationService.findByClientId(clientResponseDTO.getId()));
+            clientResponseDTOList.add(clientResponseDTO);
+        }
+        return clientResponseDTOList;
+    }
+
+    public List<ClientResponseDTO> listAllWithRelationshipByToken(String requestToken){
+        List<ClientResponseDTO> clientResponseDTOList = new ArrayList<>();
+        for (Client client : clientRepository.findByRequestToken(requestToken)) {
             ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
             clientResponseDTO.setInstallations(installationService.findByClientId(clientResponseDTO.getId()));
             clientResponseDTOList.add(clientResponseDTO);
@@ -45,7 +60,6 @@ public class ClientService {
         Client client = clientRepository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
         ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
-        clientResponseDTO.setInstallations(installationService.findByClientId(client.getId()));
         return clientResponseDTO;
     }
 
@@ -57,11 +71,20 @@ public class ClientService {
         return clientRequestDTO;
     }
 
-    public List<ClientResponseDTO> findByUserId(Long userId){
+    public List<ClientResponseDTO> findByUserRequestToken(String requestToken){
         List<ClientResponseDTO> clientResponseDTOList = new ArrayList<>();
-        for (Client client : clientRepository.findByUserId(userId)){
+        for (Client client : clientRepository.findByRequestToken(requestToken)){
             ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
             clientResponseDTO.setInstallations(installationService.findByClientId(clientResponseDTO.getId()));
+            clientResponseDTOList.add(clientResponseDTO);
+        }
+        return clientResponseDTOList;
+    }
+
+    public List<ClientResponseDTO> findOnlyClientByUserRequestToken(String requestToken){
+        List<ClientResponseDTO> clientResponseDTOList = new ArrayList<>();
+        for (Client client : clientRepository.findByRequestToken(requestToken)){
+            ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
             clientResponseDTOList.add(clientResponseDTO);
         }
         return clientResponseDTOList;

@@ -3,7 +3,9 @@ package com.api.solset.dto;
 import lombok.*;
 import util.PersonType;
 import java.util.List;
-
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class ClientResponseDTO {
     private Long id;
@@ -14,6 +16,6 @@ public class ClientResponseDTO {
     private String firstPhoneNumber;
     private String secondPhoneNumber;
     private String email;
-    private Long userId;
+    private String requestToken;
     private List<InstallationResponseDTO> installations;
 }

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface InstallationRepository extends JpaRepository<Installation, Long> {
     List<Installation> findByClientId(Long clientId);
+
+    List<Installation> findByRequestToken(String requestToken);
 }

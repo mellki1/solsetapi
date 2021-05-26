@@ -6,10 +6,11 @@ import java.util.Date;
 @Data
 public class BudgetRequestDTO {
     private Long id;
-    private Integer installationId;
+    private Long installationId;
     private Integer laborValue;
     private Integer proposalNumber;
     private String situation;
-    private Date updatingDate;
+    private String updateDate;
     private Integer value;
+    private String requestToken;
 }

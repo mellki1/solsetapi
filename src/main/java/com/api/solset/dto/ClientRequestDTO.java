@@ -13,5 +13,5 @@ public class ClientRequestDTO {
     private String firstPhoneNumber;
     private String secondPhoneNumber;
     private String email;
-    private Long userId;
+    private String requestToken;
 }

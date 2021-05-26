@@ -30,7 +30,11 @@ public class BudgetService {
     }
 
     public List<BudgetResponseDTO> findByInstallationId(Long installationId){
-        return BudgetMapper.INSTANCE.toBudgetResponseDTOList(budgetRepository.findAll());
+        return BudgetMapper.INSTANCE.toBudgetResponseDTOList(budgetRepository.findByInstallationId(installationId));
+    }
+
+    public List<BudgetResponseDTO> findByRequestToken(String requestToken){
+        return BudgetMapper.INSTANCE.toBudgetResponseDTOList(budgetRepository.findByRequestToken(requestToken));
     }
 
     public Budget save(BudgetRequestDTO budgetDTO){
