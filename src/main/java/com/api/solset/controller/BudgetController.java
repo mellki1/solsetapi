@@ -42,7 +42,7 @@ public class BudgetController {
     }
 
     @CrossOrigin
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<Budget> update(@RequestBody BudgetRequestDTO budgetDTO){
         budgetService.update(budgetDTO);
         return new ResponseEntity<>(HttpStatus.OK);
