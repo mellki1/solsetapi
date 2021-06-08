@@ -2,10 +2,8 @@ package com.api.solset.service;
 
 import com.api.solset.dto.ClientRequestDTO;
 import com.api.solset.dto.ClientResponseDTO;
-import com.api.solset.dto.UserResponseDTO;
 import com.api.solset.mapper.ClientMapper;
 import com.api.solset.model.Client;
-import com.api.solset.model.User;
 import com.api.solset.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +19,13 @@ public class ClientService {
     private ClientRepository clientRepository;
 
     @Autowired
-    private InstallationService installationService;
+    private BudgetService budgetService;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private LogService logService;
 
     public List<Client> listAll(){
         return clientRepository.findAll();
@@ -34,7 +35,8 @@ public class ClientService {
         List<ClientResponseDTO> clientResponseDTOList = new ArrayList<>();
         for (Client client : clientRepository.findAll()){
             ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
-            clientResponseDTO.setInstallations(installationService.findByClientId(clientResponseDTO.getId()));
+            clientResponseDTO.setBudgetResponseDTOList(budgetService.findByClientId(clientResponseDTO.getId()));
+            clientResponseDTO.setLogResponseDTOList(logService.findByClientIdOrElseThrow(client.getId()));
             clientResponseDTOList.add(clientResponseDTO);
         }
         return clientResponseDTOList;
@@ -44,7 +46,8 @@ public class ClientService {
         List<ClientResponseDTO> clientResponseDTOList = new ArrayList<>();
         for (Client client : clientRepository.findByRequestToken(requestToken)) {
             ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
-            clientResponseDTO.setInstallations(installationService.findByClientId(clientResponseDTO.getId()));
+            clientResponseDTO.setBudgetResponseDTOList(budgetService.findByClientId(clientResponseDTO.getId()));
+            clientResponseDTO.setLogResponseDTOList(logService.findByClientIdOrElseThrow(client.getId()));
             clientResponseDTOList.add(clientResponseDTO);
         }
         return clientResponseDTOList;
@@ -57,34 +60,29 @@ public class ClientService {
 
 
     public ClientResponseDTO findByIdOrElseThrowDto(Long id){
-        Client client = clientRepository.findById(id)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
-        ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
-        return clientResponseDTO;
+        if (id != null){
+            Client client = clientRepository.findById(id)
+                    .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
+            return ClientMapper.INSTANCE.toClientResponseDTO(client);
+        }
+        return new ClientResponseDTO();
     }
 
     public ClientResponseDTO findByIdOrElseThrowWithRelationship(Long id){
         Client client = clientRepository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
-        ClientResponseDTO clientRequestDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
-        clientRequestDTO.setInstallations(installationService.findByClientId(clientRequestDTO.getId()));
-        return clientRequestDTO;
+        ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
+        clientResponseDTO.setBudgetResponseDTOList(budgetService.findByClientId(clientResponseDTO.getId()));
+        clientResponseDTO.setLogResponseDTOList(logService.findByClientIdOrElseThrow(client.getId()));
+        return clientResponseDTO;
     }
 
     public List<ClientResponseDTO> findByUserRequestToken(String requestToken){
         List<ClientResponseDTO> clientResponseDTOList = new ArrayList<>();
         for (Client client : clientRepository.findByRequestToken(requestToken)){
             ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
-            clientResponseDTO.setInstallations(installationService.findByClientId(clientResponseDTO.getId()));
-            clientResponseDTOList.add(clientResponseDTO);
-        }
-        return clientResponseDTOList;
-    }
-
-    public List<ClientResponseDTO> findOnlyClientByUserRequestToken(String requestToken){
-        List<ClientResponseDTO> clientResponseDTOList = new ArrayList<>();
-        for (Client client : clientRepository.findByRequestToken(requestToken)){
-            ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
+            clientResponseDTO.setBudgetResponseDTOList(budgetService.findByClientId(clientResponseDTO.getId()));
+            clientResponseDTO.setLogResponseDTOList(logService.findByClientIdOrElseThrow(client.getId()));
             clientResponseDTOList.add(clientResponseDTO);
         }
         return clientResponseDTOList;

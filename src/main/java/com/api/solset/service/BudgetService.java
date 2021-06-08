@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,10 +19,38 @@ public class BudgetService {
     private BudgetRepository budgetRepository;
 
     @Autowired
-    private InstallationService installationService;
+    private ProposalService proposalService;
 
-    public List<Budget> listAll(){
+    @Autowired
+    private ClientService clientService;
+
+    @Autowired
+    private UserService userService;
+
+    public List<Budget> findAll(){
         return budgetRepository.findAll();
+    }
+
+    public List<BudgetResponseDTO> findAllWithRelationship(){
+        List<BudgetResponseDTO> budgetResponseDTOList = new ArrayList<>();
+        for (Budget budget : budgetRepository.findAll()){
+            BudgetResponseDTO budgetResponseDTO = BudgetMapper.INSTANCE.toBudgetResponseDTO(budget);
+            budgetResponseDTO.setClient(clientService.findByIdOrElseThrowDto(budget.getClientId()));
+            budgetResponseDTO.setProposalResponseDTOS(proposalService.findByBudgetId(budget.getId()));
+            budgetResponseDTOList.add(budgetResponseDTO);
+        }
+        return budgetResponseDTOList;
+    }
+
+    public List<BudgetResponseDTO> findByUserRequestToken(String requestToken){
+        List<BudgetResponseDTO> budgetResponseDTOList = new ArrayList<>();
+        for (Budget budget : budgetRepository.findByRequestToken(requestToken)){
+            BudgetResponseDTO budgetResponseDTO = BudgetMapper.INSTANCE.toBudgetResponseDTO(budget);
+            budgetResponseDTO.setClient(clientService.findByIdOrElseThrowDto(budget.getClientId()));
+            budgetResponseDTO.setProposalResponseDTOS(proposalService.findByBudgetId(budget.getId()));
+            budgetResponseDTOList.add(budgetResponseDTO);
+        }
+        return budgetResponseDTOList;
     }
 
     public Budget findByIdOrElseThrow(Long id){
@@ -29,22 +58,22 @@ public class BudgetService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Budget not found"));
     }
 
-    public List<BudgetResponseDTO> findByInstallationId(Long installationId){
-        return BudgetMapper.INSTANCE.toBudgetResponseDTOList(budgetRepository.findByInstallationId(installationId));
+    public List<BudgetResponseDTO> findByClientId(Long clientId){
+        List<BudgetResponseDTO> budgetResponseDTOList = new ArrayList<>();
+        for (Budget budget : budgetRepository.findByClientId(clientId)){
+            BudgetResponseDTO budgetResponseDTO = BudgetMapper.INSTANCE.toBudgetResponseDTO(budget);
+            budgetResponseDTO.setProposalResponseDTOS(proposalService.findByBudgetId(budget.getId()));
+            budgetResponseDTOList.add(budgetResponseDTO);
+        }
+        return budgetResponseDTOList;
     }
 
-    public List<BudgetResponseDTO> findByRequestToken(String requestToken){
-        return BudgetMapper.INSTANCE.toBudgetResponseDTOList(budgetRepository.findByRequestToken(requestToken));
+    public Budget save(Budget budget){
+        return budgetRepository.save(budget);
     }
 
-    public Budget save(BudgetRequestDTO budgetDTO){
-        return budgetRepository.save(
-                BudgetMapper.INSTANCE.toBudget(budgetDTO)
-        );
-    }
-
-    public void update(BudgetRequestDTO budgetRequestDTO){
-        Budget budgetSaved = findByIdOrElseThrow(budgetRequestDTO.getId());
+    public void update(Long id, BudgetRequestDTO budgetRequestDTO){
+        Budget budgetSaved = findByIdOrElseThrow(id);
         Budget newBudget = BudgetMapper.INSTANCE.toBudget(budgetRequestDTO);
         newBudget.setId(budgetSaved.getId());
         budgetRepository.save(newBudget);
@@ -53,5 +82,4 @@ public class BudgetService {
     public void delete(Long id){
         budgetRepository.deleteById(id);
     }
-
 }

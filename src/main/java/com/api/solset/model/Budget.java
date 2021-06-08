@@ -4,11 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Date;
+import javax.persistence.*;
 
 @Entity
 @Builder
@@ -19,11 +15,22 @@ public class Budget {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long installationId;
-    private Integer laborValue;
-    private Integer proposalNumber;
-    private String situation;
-    private String updateDate;
-    private Integer value;
+    private String structure;
+    private String technology;
+    private String classes;
+    private Boolean financing;
+    private String voltage;
+    private String fileList;
+    private String createdDate;
+    private String observations;
+    private String postalCode;
+    private String address1;
+    private String address2;
+    private String city;
+    private String state;
+    private Long clientId;
+    private String financingCnpj;
+    private String financingCpf;
+    private String birthDate;
     private String requestToken;
 }

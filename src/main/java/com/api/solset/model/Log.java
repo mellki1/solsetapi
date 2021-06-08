@@ -22,5 +22,9 @@ public class Log {
     private String title;
     private String date;
     private String description;
+    private Long clientId;
+    private String returnDate;
+    private String logType;
+    private String color;
     private String requestToken;
 }

@@ -26,7 +26,7 @@ public class ClientController {
     @CrossOrigin
     @GetMapping("/full")
     public ResponseEntity<List<ClientResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken") String requestToken){
-        return ResponseEntity.ok(clientService.listAllWithRelationshipByToken(requestToken));
+            return ResponseEntity.ok(clientService.listAllWithRelationshipByToken(requestToken));
     }
 
     @CrossOrigin

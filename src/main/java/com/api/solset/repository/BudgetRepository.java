@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
-    List<Budget> findByInstallationId(Long installationId);
+    List<Budget> findByClientId(Long clientId);
 
     List<Budget> findByRequestToken(String requestToken);
 }

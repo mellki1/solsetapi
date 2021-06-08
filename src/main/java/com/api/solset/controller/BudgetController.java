@@ -20,31 +20,29 @@ public class BudgetController {
     @CrossOrigin
     @GetMapping
     public ResponseEntity<List<Budget>> findAll(){
-        return ResponseEntity.ok(budgetService.listAll());
+        return ResponseEntity.ok(budgetService.findAll());
     }
 
     @CrossOrigin
     @GetMapping("/full")
-    public ResponseEntity<List<BudgetResponseDTO>> findAllWithRelationship(@RequestParam(value = "requestToken") String requestToken){
-        return ResponseEntity.ok(budgetService.findByRequestToken(requestToken));
-    }
+    public ResponseEntity<List<BudgetResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken") String requestToken){
+        if (requestToken !=null){
+            return ResponseEntity.ok(budgetService.findByUserRequestToken(requestToken));
+        }else{
+            return ResponseEntity.ok(budgetService.findAllWithRelationship());
+        }
 
-    @CrossOrigin
-    @GetMapping("/{id}")
-    public ResponseEntity<Budget> findById(@PathVariable Long id){
-        return ResponseEntity.ok(budgetService.findByIdOrElseThrow(id));
     }
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<Budget> save(@RequestBody BudgetRequestDTO budgetDTO){
-        return new ResponseEntity<>(budgetService.save(budgetDTO), HttpStatus.CREATED);
+    public ResponseEntity<?> save(@RequestBody Budget budget){
+        return new ResponseEntity<>(budgetService.save(budget), HttpStatus.OK);
     }
 
-    @CrossOrigin
     @PutMapping("/{id}")
-    public ResponseEntity<Budget> update(@RequestBody BudgetRequestDTO budgetDTO){
-        budgetService.update(budgetDTO);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody BudgetRequestDTO budgetRequestDTO){
+        budgetService.update(id, budgetRequestDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -38,7 +38,7 @@ public class UserService {
 
     public User findByIdOrElseThrow(Long id){
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Budget not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Proposal not found"));
     }
 
     public User findUserByRequestToken(String requestToken){

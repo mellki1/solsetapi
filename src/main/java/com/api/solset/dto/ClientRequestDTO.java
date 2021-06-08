@@ -10,6 +10,7 @@ public class ClientRequestDTO {
     private String cnpj;
     private String cpf;
     private String name;
+    private String fantasyName;
     private String firstPhoneNumber;
     private String secondPhoneNumber;
     private String email;

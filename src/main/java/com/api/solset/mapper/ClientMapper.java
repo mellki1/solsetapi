@@ -18,6 +18,7 @@ public abstract class ClientMapper {
                 .secondPhoneNumber(clientRequestDTO.getSecondPhoneNumber())
                 .id(clientRequestDTO.getId())
                 .name(clientRequestDTO.getName())
+                .fantasyName(clientRequestDTO.getFantasyName())
                 .personType(clientRequestDTO.getPersonType())
                 .requestToken(clientRequestDTO.getRequestToken())
                 .build();
@@ -31,6 +32,7 @@ public abstract class ClientMapper {
                 .secondPhoneNumber(client.getSecondPhoneNumber())
                 .id(client.getId())
                 .name(client.getName())
+                .fantasyName(client.getFantasyName())
                 .personType(client.getPersonType())
                 .requestToken(client.getRequestToken())
                 .build();
