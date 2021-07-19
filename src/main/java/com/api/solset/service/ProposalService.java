@@ -52,6 +52,17 @@ public class ProposalService {
         return proposalResponseDTOList;
     }
 
+    public List<ProposalResponseDTO> listAllWithRelationship(){
+        List<ProposalResponseDTO> proposalResponseDTOList = new ArrayList<>();
+        for (Proposal proposal : proposalRepository.findAll()){
+            ProposalResponseDTO proposalResponseDTO = ProposalMapper.INSTANCE.toBudgetResponseDTO(proposal);
+            proposalResponseDTO.setBudget(budgetService.findByIdOrElseThrow(proposal.getBudgetId()));
+            proposalResponseDTO.setClient(clientService.findByIdOrElseThrow(proposalResponseDTO.getBudget().getClientId()));
+            proposalResponseDTOList.add(proposalResponseDTO);
+        }
+        return proposalResponseDTOList;
+    }
+
     public Proposal save(ProposalRequestDTO budgetDTO){
         return proposalRepository.save(
                 ProposalMapper.INSTANCE.toBudget(budgetDTO)
@@ -67,6 +78,10 @@ public class ProposalService {
 
     public void delete(Long id){
         proposalRepository.deleteById(id);
+    }
+
+    public void deleteByBudgetId(Long budgetId){
+        proposalRepository.deleteByBudgetId(budgetId);
     }
 
 }

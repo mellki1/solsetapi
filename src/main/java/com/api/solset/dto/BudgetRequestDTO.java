@@ -18,6 +18,7 @@ public class BudgetRequestDTO {
     private String address2;
     private String city;
     private String state;
+    private String complement;
     private Long clientId;
     private String financingCnpj;
     private String financingCpf;

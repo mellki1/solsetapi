@@ -4,6 +4,7 @@ import com.api.solset.dto.BudgetRequestDTO;
 import com.api.solset.dto.BudgetResponseDTO;
 import com.api.solset.model.Budget;
 import com.api.solset.service.BudgetService;
+import com.api.solset.service.FireBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,21 +18,17 @@ public class BudgetController {
     @Autowired
     private BudgetService budgetService;
 
-    @CrossOrigin
-    @GetMapping
-    public ResponseEntity<List<Budget>> findAll(){
-        return ResponseEntity.ok(budgetService.findAll());
-    }
+    @Autowired
+    private FireBaseService fireBaseService;
 
     @CrossOrigin
-    @GetMapping("/full")
-    public ResponseEntity<List<BudgetResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken") String requestToken){
-        if (requestToken !=null){
-            return ResponseEntity.ok(budgetService.findByUserRequestToken(requestToken));
-        }else{
-            return ResponseEntity.ok(budgetService.findAllWithRelationship());
-        }
-
+    @GetMapping("/full/")
+    public ResponseEntity<List<BudgetResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken", required = false) String requestToken){
+        if (requestToken !=null && fireBaseService.verifyUser(requestToken) != null){
+                return ResponseEntity.ok(budgetService.findByUserRequestToken(requestToken));
+            }else{
+                return ResponseEntity.ok(budgetService.findAllWithRelationship());
+            }
     }
 
     @CrossOrigin

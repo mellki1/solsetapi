@@ -3,6 +3,7 @@ package com.api.solset.controller;
 import com.api.solset.dto.ProposalRequestDTO;
 import com.api.solset.dto.ProposalResponseDTO;
 import com.api.solset.model.Proposal;
+import com.api.solset.service.FireBaseService;
 import com.api.solset.service.ProposalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,16 +18,17 @@ public class ProposalController {
     @Autowired
     private ProposalService proposalService;
 
-    @CrossOrigin
-    @GetMapping
-    public ResponseEntity<List<Proposal>> findAll(){
-        return ResponseEntity.ok(proposalService.listAll());
-    }
+    @Autowired
+    private FireBaseService fireBaseService;
 
     @CrossOrigin
     @GetMapping("/full")
-    public ResponseEntity<List<ProposalResponseDTO>> findAllWithRelationship(@RequestParam(value = "requestToken") String requestToken){
-        return ResponseEntity.ok(proposalService.findByRequestToken(requestToken));
+    public ResponseEntity<List<ProposalResponseDTO>> findAllWithRelationship(@RequestParam(value = "requestToken", required = false) String requestToken){
+        if (requestToken !=null && fireBaseService.verifyUser(requestToken) != null) {
+            return ResponseEntity.ok(proposalService.findByRequestToken(requestToken));
+        }else{
+            return ResponseEntity.ok(proposalService.listAllWithRelationship());
+        }
     }
 
     @CrossOrigin

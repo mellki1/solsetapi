@@ -8,4 +8,6 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
     List<Budget> findByClientId(Long clientId);
 
     List<Budget> findByRequestToken(String requestToken);
+
+    void deleteByClientId(Long clientId);
 }

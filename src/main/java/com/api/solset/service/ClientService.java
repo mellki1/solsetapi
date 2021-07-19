@@ -102,6 +102,7 @@ public class ClientService {
     }
 
     public void delete(Long id){
+        budgetService.deleteByClientId(id);
         clientRepository.deleteById(id);
     }
 }

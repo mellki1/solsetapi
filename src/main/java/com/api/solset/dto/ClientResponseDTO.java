@@ -19,6 +19,12 @@ public class ClientResponseDTO {
     private String secondPhoneNumber;
     private String email;
     private String requestToken;
+    private String postalCode;
+    private String address1;
+    private String address2;
+    private String city;
+    private String state;
+    private String complement;
     private List<BudgetResponseDTO> budgetResponseDTOList;
     private List<Log> logResponseDTOList;
 }

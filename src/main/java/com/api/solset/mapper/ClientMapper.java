@@ -21,6 +21,12 @@ public abstract class ClientMapper {
                 .fantasyName(clientRequestDTO.getFantasyName())
                 .personType(clientRequestDTO.getPersonType())
                 .requestToken(clientRequestDTO.getRequestToken())
+                .postalCode(clientRequestDTO.getPostalCode())
+                .address1(clientRequestDTO.getAddress1())
+                .address2(clientRequestDTO.getAddress2())
+                .city(clientRequestDTO.getCity())
+                .state(clientRequestDTO.getState())
+                .complement(clientRequestDTO.getComplement())
                 .build();
     }
     public ClientResponseDTO toClientResponseDTO(Client client){
@@ -34,6 +40,12 @@ public abstract class ClientMapper {
                 .name(client.getName())
                 .fantasyName(client.getFantasyName())
                 .personType(client.getPersonType())
+                .postalCode(client.getPostalCode())
+                .address1(client.getAddress1())
+                .address2(client.getAddress2())
+                .city(client.getCity())
+                .state(client.getState())
+                .complement(client.getComplement())
                 .requestToken(client.getRequestToken())
                 .build();
     }

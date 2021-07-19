@@ -26,6 +26,7 @@ public class BudgetResponseDTO {
     private String address2;
     private String city;
     private String state;
+    private String complement;
     private String requestToken;
     private ClientResponseDTO client;
     private List<ProposalResponseDTO> proposalResponseDTOS;

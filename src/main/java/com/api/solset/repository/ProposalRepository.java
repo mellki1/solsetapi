@@ -8,4 +8,6 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
     List<Proposal> findByBudgetId(Long budgetId);
 
     List<Proposal> findByRequestToken(String requestToken);
+
+    void deleteByBudgetId(Long proposalId);
 }

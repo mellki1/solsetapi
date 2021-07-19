@@ -4,6 +4,7 @@ import com.api.solset.dto.ClientRequestDTO;
 import com.api.solset.dto.ClientResponseDTO;
 import com.api.solset.model.Client;
 import com.api.solset.service.ClientService;
+import com.api.solset.service.FireBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,28 +18,17 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-    @CrossOrigin
-    @GetMapping
-    public ResponseEntity<List<Client>> findAll(){
-        return ResponseEntity.ok(clientService.listAll());
-    }
+    @Autowired
+    private FireBaseService fireBaseService;
 
     @CrossOrigin
     @GetMapping("/full")
-    public ResponseEntity<List<ClientResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken") String requestToken){
+    public ResponseEntity<List<ClientResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken", required = false) String requestToken){
+        if (requestToken !=null && fireBaseService.verifyUser(requestToken) != null) {
             return ResponseEntity.ok(clientService.listAllWithRelationshipByToken(requestToken));
-    }
-
-    @CrossOrigin
-    @GetMapping("/{id}")
-    public ResponseEntity<Client> findById(@PathVariable Long id){
-        return ResponseEntity.ok(clientService.findByIdOrElseThrow(id));
-    }
-
-    @CrossOrigin
-    @GetMapping("/{id}/full")
-    public ResponseEntity<ClientResponseDTO> findByIdWithRelationship(@PathVariable Long id){
-        return ResponseEntity.ok(clientService.findByIdOrElseThrowWithRelationship(id));
+        }else{
+            return ResponseEntity.ok(clientService.listAllWithRelationship());
+        }
     }
 
     @CrossOrigin

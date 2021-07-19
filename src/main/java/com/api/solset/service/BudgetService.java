@@ -27,10 +27,6 @@ public class BudgetService {
     @Autowired
     private UserService userService;
 
-    public List<Budget> findAll(){
-        return budgetRepository.findAll();
-    }
-
     public List<BudgetResponseDTO> findAllWithRelationship(){
         List<BudgetResponseDTO> budgetResponseDTOList = new ArrayList<>();
         for (Budget budget : budgetRepository.findAll()){
@@ -81,5 +77,12 @@ public class BudgetService {
 
     public void delete(Long id){
         budgetRepository.deleteById(id);
+        proposalService.deleteByBudgetId(id);
+    }
+
+    public void deleteByClientId(Long clientId){
+        for (Budget budget : budgetRepository.findByClientId(clientId)){
+            delete(budget.getId());
+        }
     }
 }
