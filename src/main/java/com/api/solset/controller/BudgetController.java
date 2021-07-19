@@ -37,6 +37,7 @@ public class BudgetController {
         return new ResponseEntity<>(budgetService.save(budget), HttpStatus.OK);
     }
 
+    @CrossOrigin
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody BudgetRequestDTO budgetRequestDTO){
         budgetService.update(id, budgetRequestDTO);
