@@ -8,4 +8,5 @@ import java.util.List;
 public interface LogRepository extends JpaRepository<Log, Long> {
     List<Log> findByRequestToken(String requestToken);
     List<Log> findByClientId(Long clientId);
+    void deleteByClientId(Long clientId);
 }

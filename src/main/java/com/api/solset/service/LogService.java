@@ -45,4 +45,8 @@ public class LogService {
     public void delete(Long id){
         logRepository.deleteById(id);
     }
+
+    public void deleteByClientId(Long clientId){
+        logRepository.deleteByClientId(clientId);
+    }
 }

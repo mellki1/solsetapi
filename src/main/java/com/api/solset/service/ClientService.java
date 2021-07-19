@@ -103,6 +103,7 @@ public class ClientService {
 
     public void delete(Long id){
         budgetService.deleteByClientId(id);
+        logService.deleteByClientId(id);
         clientRepository.deleteById(id);
     }
 }
