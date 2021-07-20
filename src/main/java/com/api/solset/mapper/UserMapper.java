@@ -22,5 +22,17 @@ public abstract class UserMapper {
                 .userType(userRequestDTO.getUserType())
                 .build();
     }
-    public abstract UserResponseDTO toUserResponseDTO(User user);
+    public UserResponseDTO toUserResponseDTO(User user){
+        return UserResponseDTO.builder()
+                .cpf(user.getCpf())
+                .email(user.getEmail())
+                .firstPhoneNumber(user.getFirstPhoneNumber())
+                .secondPhoneNumber(user.getSecondPhoneNumber())
+                .id(user.getId())
+                .name(user.getName())
+                .password(user.getPassword())
+                .requestToken(user.getRequestToken())
+                .userType(user.getUserType())
+                .build();
+    }
 }

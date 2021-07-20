@@ -1,10 +1,16 @@
 package com.api.solset.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import util.UserType;
 
 import java.util.List;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class UserResponseDTO {
     private Long id;

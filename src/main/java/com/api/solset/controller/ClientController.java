@@ -2,7 +2,6 @@ package com.api.solset.controller;
 
 import com.api.solset.dto.ClientRequestDTO;
 import com.api.solset.dto.ClientResponseDTO;
-import com.api.solset.model.Client;
 import com.api.solset.service.ClientService;
 import com.api.solset.service.FireBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class ClientController {
     @CrossOrigin
     @GetMapping("/full")
     public ResponseEntity<List<ClientResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken", required = false) String requestToken){
-        if (requestToken !=null && fireBaseService.verifyUser(requestToken) != null) {
+        if (requestToken !=null /*&& fireBaseService.verifyUser(requestToken) != null*/) {
             return ResponseEntity.ok(clientService.listAllWithRelationshipByToken(requestToken));
         }else{
             return ResponseEntity.ok(clientService.listAllWithRelationship());

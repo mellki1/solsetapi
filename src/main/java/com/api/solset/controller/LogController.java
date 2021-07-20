@@ -17,7 +17,7 @@ public class LogController {
     private LogService logService;
 
     @CrossOrigin
-    @GetMapping
+    @GetMapping("/full")
     public ResponseEntity<List<Log>> findAll(@RequestParam(value = "requestToken", required = false) String requestToken){
         if (requestToken!=null){
             return ResponseEntity.ok(logService.findByRequestToken(requestToken));

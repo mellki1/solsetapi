@@ -24,7 +24,7 @@ public class ProposalController {
     @CrossOrigin
     @GetMapping("/full")
     public ResponseEntity<List<ProposalResponseDTO>> findAllWithRelationship(@RequestParam(value = "requestToken", required = false) String requestToken){
-        if (requestToken !=null && fireBaseService.verifyUser(requestToken) != null) {
+        if (requestToken !=null /*&& fireBaseService.verifyUser(requestToken) != null*/) {
             return ResponseEntity.ok(proposalService.findByRequestToken(requestToken));
         }else{
             return ResponseEntity.ok(proposalService.listAllWithRelationship());

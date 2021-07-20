@@ -22,9 +22,9 @@ public class BudgetController {
     private FireBaseService fireBaseService;
 
     @CrossOrigin
-    @GetMapping("/full/")
+    @GetMapping("/full")
     public ResponseEntity<List<BudgetResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken", required = false) String requestToken){
-        if (requestToken !=null && fireBaseService.verifyUser(requestToken) != null){
+        if (requestToken !=null /*&& fireBaseService.verifyUser(requestToken) != null*/){
                 return ResponseEntity.ok(budgetService.findByUserRequestToken(requestToken));
             }else{
                 return ResponseEntity.ok(budgetService.findAllWithRelationship());
