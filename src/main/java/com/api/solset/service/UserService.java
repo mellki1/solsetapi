@@ -26,9 +26,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<UserResponseDTO> listAllWithRelationship(){
+    public List<UserResponseDTO> listAllWithRelationship(String masterName){
         List<UserResponseDTO> userResponseDTOList = new ArrayList<>();
-        for (User user : userRepository.findAll()){
+        for (User user : userRepository.findByMasterName(masterName)){
             UserResponseDTO userResponseDTO = UserMapper.INSTANCE.toUserResponseDTO(user);
             userResponseDTO.setClients(clientService.listAllWithRelationship());
             userResponseDTOList.add(userResponseDTO);
@@ -45,8 +45,13 @@ public class UserService {
         return userRepository.findByRequestToken(requestToken);
     }
 
-    public UserResponseDTO findByRequestToken(String requestToken){
-        User user =  userRepository.findByRequestToken(requestToken);
+    public UserResponseDTO findByRequestToken(String requestToken, String masterName){
+        User user = null;
+        if (masterName.equals("ALL")){
+            user =  userRepository.findByRequestToken(requestToken);
+        }else{
+            user =  userRepository.findByRequestTokenAndMasterName(requestToken, masterName);
+        }
         UserResponseDTO userResponseDTO = UserMapper.INSTANCE.toUserResponseDTO(user);
         userResponseDTO.setClients(clientService.findByUserRequestToken(userResponseDTO.getRequestToken()));
         return userResponseDTO;
@@ -57,8 +62,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void update(UserRequestDTO userRequestDTO){
-        User budgetSaved = findByIdOrElseThrow(userRequestDTO.getId());
+    public void update(Long id, UserRequestDTO userRequestDTO){
+        User budgetSaved = findByIdOrElseThrow(id);
         User newBudget = UserMapper.INSTANCE.toUser(userRequestDTO);
         newBudget.setId(budgetSaved.getId());
         userRepository.save(newBudget);

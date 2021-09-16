@@ -16,32 +16,28 @@ public class LogController {
     @Autowired
     private LogService logService;
 
-    @CrossOrigin
     @GetMapping("/full")
-    public ResponseEntity<List<Log>> findAll(@RequestParam(value = "requestToken", required = false) String requestToken){
-        if (requestToken!=null){
+    public ResponseEntity<List<Log>> findAll(@RequestParam(value = "requestToken", required = false) String requestToken) {
+        if (requestToken != null) {
             return ResponseEntity.ok(logService.findByRequestToken(requestToken));
-        }else{
+        } else {
             return ResponseEntity.ok(logService.listAll());
         }
     }
 
-    @CrossOrigin
     @PostMapping
-    public ResponseEntity<Log> save(@RequestBody Log log){
+    public ResponseEntity<Log> save(@RequestBody Log log) {
         return new ResponseEntity<>(logService.save(log), HttpStatus.CREATED);
     }
 
-    @CrossOrigin
-    @PutMapping("/{id}")
-    public ResponseEntity<Log> update(@RequestBody Log log){
-        logService.update(log);
+    @PutMapping("{id}")
+    public ResponseEntity<Log> update(@PathVariable Long id, @RequestBody Log log) {
+        logService.update(id, log);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @CrossOrigin
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         logService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

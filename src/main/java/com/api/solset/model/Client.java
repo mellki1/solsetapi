@@ -35,4 +35,5 @@ public class Client {
     private String city;
     private String state;
     private String complement;
+    private String contactName;
 }

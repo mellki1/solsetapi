@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ResourceBundle;
@@ -17,20 +18,20 @@ public class FireBaseService {
 
     private static ResourceBundle rb = ResourceBundle.getBundle("application");
 
-    public UserRecord verifyUser(String uid) {
-        try {
-            FileInputStream serviceAccount = new FileInputStream(rb.getString("firebase.json.path"));
-            FirebaseOptions options =  new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl("https://solset-646d1-default-rtdb.firebaseio.com")
+    @PostConstruct
+    public void initialization() {
+
+        try{
+            FileInputStream inputStream = new FileInputStream(rb.getString("firebase.json.path"));
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(inputStream))
                     .build();
 
             FirebaseApp.initializeApp(options);
-            UserRecord user = FirebaseAuth.getInstance().getUser(uid);
-            return user;
-        } catch (IOException | FirebaseAuthException e) {
-            e.printStackTrace();
-            return null;
         }
+        catch (Exception error) {
+            error.printStackTrace();
+        }
+
     }
 }

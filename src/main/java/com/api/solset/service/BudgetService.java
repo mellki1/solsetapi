@@ -68,11 +68,12 @@ public class BudgetService {
         return budgetRepository.save(budget);
     }
 
-    public void update(Long id, BudgetRequestDTO budgetRequestDTO){
+    public Budget update(Long id, BudgetRequestDTO budgetRequestDTO){
         Budget budgetSaved = findByIdOrElseThrow(id);
         Budget newBudget = BudgetMapper.INSTANCE.toBudget(budgetRequestDTO);
         newBudget.setId(budgetSaved.getId());
         budgetRepository.save(newBudget);
+        return newBudget;
     }
 
     public void delete(Long id){

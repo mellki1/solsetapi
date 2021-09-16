@@ -20,6 +20,7 @@ public abstract class UserMapper {
                 .password(userRequestDTO.getPassword())
                 .requestToken(userRequestDTO.getRequestToken())
                 .userType(userRequestDTO.getUserType())
+                .masterName(userRequestDTO.getMasterName())
                 .build();
     }
     public UserResponseDTO toUserResponseDTO(User user){
@@ -33,6 +34,7 @@ public abstract class UserMapper {
                 .password(user.getPassword())
                 .requestToken(user.getRequestToken())
                 .userType(user.getUserType())
+                .masterName(user.getMasterName())
                 .build();
     }
 }

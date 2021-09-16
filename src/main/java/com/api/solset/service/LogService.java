@@ -36,8 +36,8 @@ public class LogService {
         return logRepository.save(log);
     }
 
-    public void update(Log log){
-        findByIdOrElseThrow(log.getId());
+    public void update(Long id,Log log){
+        findByIdOrElseThrow(id);
         delete(log.getId());
         logRepository.save(log);
     }

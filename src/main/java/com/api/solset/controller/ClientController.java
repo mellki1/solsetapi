@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -20,38 +21,33 @@ public class ClientController {
     @Autowired
     private FireBaseService fireBaseService;
 
-    @CrossOrigin
     @GetMapping("/full")
-    public ResponseEntity<List<ClientResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken", required = false) String requestToken){
-        if (requestToken !=null /*&& fireBaseService.verifyUser(requestToken) != null*/) {
+    public ResponseEntity<List<ClientResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken", required = false) String requestToken) {
+        if (requestToken != null /*&& fireBaseService.verifyUser(requestToken) != null*/) {
             return ResponseEntity.ok(clientService.listAllWithRelationshipByToken(requestToken));
-        }else{
+        } else {
             return ResponseEntity.ok(clientService.listAllWithRelationship());
         }
     }
 
-    @CrossOrigin
     @GetMapping("/seller")
-    public ResponseEntity<List<ClientResponseDTO>> findByUserId(@RequestParam(name = "requestToken") String requestToken){
+    public ResponseEntity<List<ClientResponseDTO>> findByUserId(@RequestParam(name = "requestToken") String requestToken) {
         return ResponseEntity.ok(clientService.findByUserRequestToken(requestToken));
     }
 
-    @CrossOrigin
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody ClientRequestDTO clientRequestDTO){
+    public ResponseEntity<?> save(@RequestBody ClientRequestDTO clientRequestDTO) {
         return new ResponseEntity<>(clientService.save(clientRequestDTO), HttpStatus.CREATED);
     }
 
-    @CrossOrigin
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody ClientRequestDTO clientRequestDTO){
-        clientService.update(clientRequestDTO);
+    @PutMapping("{id}")
+    public ResponseEntity<?> update(@PathVariable Long id,@RequestBody ClientRequestDTO clientRequestDTO) {
+        clientService.update(id, clientRequestDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @CrossOrigin
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         clientService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -94,7 +94,7 @@ public class ClientService {
         );
     }
 
-    public void update(ClientRequestDTO clientRequestDTO){
+    public void update(Long id, ClientRequestDTO clientRequestDTO){
         Client clientSaved = findByIdOrElseThrow(clientRequestDTO.getId());
         Client newClient = ClientMapper.INSTANCE.toClient(clientRequestDTO);
         newClient.setId(clientSaved.getId());

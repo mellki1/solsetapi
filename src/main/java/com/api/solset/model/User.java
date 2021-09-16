@@ -27,4 +27,5 @@ public class User {
     private String password;
     private UserType userType;
     private String requestToken;
+    private String masterName;
 }

@@ -21,4 +21,5 @@ public class ClientRequestDTO {
     private String state;
     private String complement;
     private String requestToken;
+    private String contactName;
 }

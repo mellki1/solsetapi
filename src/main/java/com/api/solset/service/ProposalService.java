@@ -69,8 +69,8 @@ public class ProposalService {
         );
     }
 
-    public void update(ProposalRequestDTO proposalRequestDTO){
-        Proposal proposalSaved = findByIdOrElseThrow(proposalRequestDTO.getId());
+    public void update(Long id,ProposalRequestDTO proposalRequestDTO){
+        Proposal proposalSaved = findByIdOrElseThrow(id);
         Proposal newProposal = ProposalMapper.INSTANCE.toBudget(proposalRequestDTO);
         newProposal.setId(proposalSaved.getId());
         proposalRepository.save(newProposal);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -21,33 +22,34 @@ public class UserController {
     @Autowired
     private FireBaseService fireBaseService;
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUsers() {
+            return ResponseEntity.ok(userService.listAll());
+    }
 
-    @CrossOrigin
     @GetMapping("/full")
-    public ResponseEntity<?> findAll(@RequestParam(name = "requestToken", required = false) String requestToken){
-        if (requestToken!= null /*&& fireBaseService.verifyUser(requestToken) != null*/){
-            return ResponseEntity.ok(userService.findByRequestToken(requestToken));
-        }else{
-            return ResponseEntity.ok(userService.listAllWithRelationship());
+    public ResponseEntity<?> findAll(@RequestParam(required = false) String requestToken, @RequestParam String masterName) {
+        if (requestToken != null) {
+            return ResponseEntity.ok(userService.findByRequestToken(requestToken, masterName));
+        } else {
+            return ResponseEntity.ok(userService.listAllWithRelationship(masterName));
         }
     }
 
-    @CrossOrigin
     @PostMapping
-    public ResponseEntity<User> save(@RequestBody UserRequestDTO userRequestDTO){
+    public ResponseEntity<User> save(@RequestBody UserRequestDTO userRequestDTO) {
         return new ResponseEntity<>(userService.save(userRequestDTO), HttpStatus.OK);
     }
 
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> update(@RequestBody UserRequestDTO userRequestDTO){
-        userService.update(userRequestDTO);
+    @PutMapping("{id}")
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
+        userService.update(id, userRequestDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
     @DeleteMapping()
-    public ResponseEntity<?> delete(@RequestParam (name = "requestToken", required = true) String userToken){
+    public ResponseEntity<?> delete(@RequestParam(name = "requestToken", required = true) String userToken) {
         userService.delete(userToken);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -27,6 +27,7 @@ public abstract class ClientMapper {
                 .city(clientRequestDTO.getCity())
                 .state(clientRequestDTO.getState())
                 .complement(clientRequestDTO.getComplement())
+                .contactName(clientRequestDTO.getContactName())
                 .build();
     }
     public ClientResponseDTO toClientResponseDTO(Client client){
@@ -47,6 +48,7 @@ public abstract class ClientMapper {
                 .state(client.getState())
                 .complement(client.getComplement())
                 .requestToken(client.getRequestToken())
+                .contactName(client.getContactName())
                 .build();
     }
 }

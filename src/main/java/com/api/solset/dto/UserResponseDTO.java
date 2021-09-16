@@ -23,4 +23,5 @@ public class UserResponseDTO {
     private UserType userType;
     private String requestToken;
     private List<ClientResponseDTO> clients;
+    private String masterName;
 }

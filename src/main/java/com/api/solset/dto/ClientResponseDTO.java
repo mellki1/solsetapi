@@ -25,6 +25,7 @@ public class ClientResponseDTO {
     private String city;
     private String state;
     private String complement;
+    private String contactName;
     private List<BudgetResponseDTO> budgetResponseDTOList;
     private List<Log> logResponseDTOList;
 }
