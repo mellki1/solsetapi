@@ -30,7 +30,7 @@ public class UserService {
         List<UserResponseDTO> userResponseDTOList = new ArrayList<>();
         for (User user : userRepository.findByMasterName(masterName)){
             UserResponseDTO userResponseDTO = UserMapper.INSTANCE.toUserResponseDTO(user);
-            userResponseDTO.setClients(clientService.listAllWithRelationship());
+            userResponseDTO.setClients(clientService.findByUserRequestToken(user.getRequestToken()));
             userResponseDTOList.add(userResponseDTO);
         }
         return userResponseDTOList;

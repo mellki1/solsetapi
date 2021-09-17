@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
         List<Client> findByRequestToken(String requestToken);
-        List<Client> findByUserId(Long userId);
 }
