@@ -2,6 +2,7 @@ package com.api.solset.repository;
 
 import com.api.solset.model.Proposal;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 
 public interface ProposalRepository extends JpaRepository<Proposal, Long> {
@@ -10,4 +11,6 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
     List<Proposal> findByRequestToken(String requestToken);
 
     void deleteByBudgetId(Long proposalId);
+
+    List<Proposal> findByMasterName(String masterName);
 }

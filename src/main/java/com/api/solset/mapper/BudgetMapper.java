@@ -30,6 +30,7 @@ public abstract class BudgetMapper {
                 .financingCnpj(budgetRequestDTO.getFinancingCnpj())
                 .financingCpf(budgetRequestDTO.getFinancingCpf())
                 .birthDate(budgetRequestDTO.getBirthDate())
+                .masterName(budgetRequestDTO.getMasterName())
                 .id(budgetRequestDTO.getId())
                 .build();
     }
@@ -53,6 +54,7 @@ public abstract class BudgetMapper {
                 .financingCnpj(budget.getFinancingCnpj())
                 .financingCpf(budget.getFinancingCpf())
                 .birthDate(budget.getBirthDate())
+                .masterName(budget.getMasterName())
                 .id(budget.getId())
                 .build();
     }

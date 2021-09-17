@@ -1,7 +1,6 @@
 package com.api.solset.controller;
 
 import com.api.solset.dto.UserRequestDTO;
-import com.api.solset.dto.UserResponseDTO;
 import com.api.solset.model.User;
 import com.api.solset.service.FireBaseService;
 import com.api.solset.service.UserService;
@@ -9,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("user")
@@ -32,7 +29,7 @@ public class UserController {
         if (requestToken != null) {
             return ResponseEntity.ok(userService.findByRequestToken(requestToken, masterName));
         } else {
-            return ResponseEntity.ok(userService.listAllWithRelationship(masterName));
+            return ResponseEntity.ok(userService.findAllWithRelationship(masterName));
         }
     }
 

@@ -22,11 +22,12 @@ public class ClientController {
     private FireBaseService fireBaseService;
 
     @GetMapping("/full")
-    public ResponseEntity<List<ClientResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken", required = false) String requestToken) {
-        if (requestToken != null /*&& fireBaseService.verifyUser(requestToken) != null*/) {
+    public ResponseEntity<List<ClientResponseDTO>> findAllWithRelationship(@RequestParam(required = false) String requestToken,
+                                                                           @RequestParam String masterName) {
+        if (requestToken != null) {
             return ResponseEntity.ok(clientService.listAllWithRelationshipByToken(requestToken));
         } else {
-            return ResponseEntity.ok(clientService.listAllWithRelationship());
+            return ResponseEntity.ok(clientService.listAllWithRelationship(masterName));
         }
     }
 

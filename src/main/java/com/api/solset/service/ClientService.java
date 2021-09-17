@@ -3,6 +3,7 @@ package com.api.solset.service;
 import com.api.solset.dto.ClientRequestDTO;
 import com.api.solset.dto.ClientResponseDTO;
 import com.api.solset.mapper.ClientMapper;
+import com.api.solset.model.Budget;
 import com.api.solset.model.Client;
 import com.api.solset.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,15 @@ public class ClientService {
         return clientRepository.findAll();
     }
 
-    public List<ClientResponseDTO> listAllWithRelationship(){
+    public List<ClientResponseDTO> listAllWithRelationship(String masterName){
         List<ClientResponseDTO> clientResponseDTOList = new ArrayList<>();
-        for (Client client : clientRepository.findAll()){
+        List<Client> clientList = null;
+        if (masterName.equals("ALL")) {
+            clientList = clientRepository.findAll();
+        }else{
+            clientList = clientRepository.findByMasterName(masterName);
+        }
+        for (Client client : clientList){
             ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
             clientResponseDTO.setBudgetResponseDTOList(budgetService.findByClientId(clientResponseDTO.getId()));
             clientResponseDTO.setLogResponseDTOList(logService.findByClientIdOrElseThrow(client.getId()));

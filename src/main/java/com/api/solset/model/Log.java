@@ -27,4 +27,5 @@ public class Log {
     private String logType;
     private String color;
     private String requestToken;
+    private String masterName;
 }

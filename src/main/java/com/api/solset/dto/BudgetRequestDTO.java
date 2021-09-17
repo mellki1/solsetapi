@@ -24,4 +24,5 @@ public class BudgetRequestDTO {
     private String financingCpf;
     private String birthDate;
     private String requestToken;
+    private String masterName;
 }

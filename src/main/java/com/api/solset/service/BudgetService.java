@@ -4,6 +4,7 @@ import com.api.solset.dto.BudgetRequestDTO;
 import com.api.solset.dto.BudgetResponseDTO;
 import com.api.solset.mapper.BudgetMapper;
 import com.api.solset.model.Budget;
+import com.api.solset.model.Client;
 import com.api.solset.repository.BudgetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,12 +28,23 @@ public class BudgetService {
     @Autowired
     private UserService userService;
 
-    public List<BudgetResponseDTO> findAllWithRelationship(){
+    public List<BudgetResponseDTO> findAllWithRelationship(String masterName){
         List<BudgetResponseDTO> budgetResponseDTOList = new ArrayList<>();
-        for (Budget budget : budgetRepository.findAll()){
+        List<Budget> budgetList = null;
+        if (masterName.equals("ALL")){
+            budgetList = budgetRepository.findAll();
+        }else{
+            budgetList = budgetRepository.findByMasterName(masterName);
+        }
+        for (Budget budget : budgetList){
             BudgetResponseDTO budgetResponseDTO = BudgetMapper.INSTANCE.toBudgetResponseDTO(budget);
-            budgetResponseDTO.setClient(clientService.findByIdOrElseThrowDto(budget.getClientId()));
-            budgetResponseDTO.setProposalResponseDTOS(proposalService.findByBudgetId(budget.getId()));
+            if (masterName.equals("ALL")){
+                budgetResponseDTO.setClient(clientService.findByIdOrElseThrowDto(budget.getClientId()));
+                budgetResponseDTO.setProposalResponseDTOS(proposalService.findByBudgetId(budget.getId()));
+            }else{
+                budgetResponseDTO.setClient(clientService.findByIdOrElseThrowWithRelationship(budget.getClientId()));
+                budgetResponseDTO.setProposalResponseDTOS(proposalService.findByBudgetId(budget.getId()));
+            }
             budgetResponseDTOList.add(budgetResponseDTO);
         }
         return budgetResponseDTOList;

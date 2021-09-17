@@ -44,4 +44,5 @@ public class ProposalResponseDTO {
     private String observation;
     private Client client;
     private Budget budget;
+    private String masterName;
 }

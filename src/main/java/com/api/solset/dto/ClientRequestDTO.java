@@ -22,4 +22,5 @@ public class ClientRequestDTO {
     private String complement;
     private String requestToken;
     private String contactName;
+    private String masterName;
 }

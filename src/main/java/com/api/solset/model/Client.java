@@ -36,4 +36,5 @@ public class Client {
     private String state;
     private String complement;
     private String contactName;
+    private String masterName;
 }

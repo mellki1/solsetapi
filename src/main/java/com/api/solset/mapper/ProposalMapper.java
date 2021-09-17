@@ -41,6 +41,7 @@ public abstract class ProposalMapper {
                 .kitValue(proposalRequestDTO.getKitValue())
                 .commissionValue(proposalRequestDTO.getCommissionValue())
                 .observation(proposalRequestDTO.getObservation())
+                .masterName(proposalRequestDTO.getMasterName())
                 .build();
     }
 
@@ -74,6 +75,7 @@ public abstract class ProposalMapper {
                 .kitValue(proposal.getKitValue())
                 .commissionValue(proposal.getCommissionValue())
                 .observation(proposal.getObservation())
+                .masterName(proposal.getMasterName())
                 .build();
     }
 

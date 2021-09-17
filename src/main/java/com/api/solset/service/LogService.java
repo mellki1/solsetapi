@@ -19,6 +19,14 @@ public class LogService {
         return logRepository.findAll();
     }
 
+    public List<Log> findByMasterName(String masterName){
+        if (masterName.equals("ALL")){
+            return logRepository.findAll();
+        } else {
+            return logRepository.findByMasterName(masterName);
+        }
+    }
+
     public Log findByIdOrElseThrow(Long id){
         return logRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Log not found"));

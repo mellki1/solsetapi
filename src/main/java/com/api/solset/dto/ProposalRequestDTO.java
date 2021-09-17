@@ -33,4 +33,5 @@ public class ProposalRequestDTO {
     private String kitValue;
     private String commissionValue;
     private String observation;
+    private String masterName;
 }

@@ -58,4 +58,5 @@ public class Proposal {
     private String kitValue;
     private String commissionValue;
     private String observation;
+    private String masterName;
 }

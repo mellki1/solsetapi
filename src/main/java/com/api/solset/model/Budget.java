@@ -34,4 +34,5 @@ public class Budget {
     private String financingCpf;
     private String birthDate;
     private String requestToken;
+    private String masterName;
 }

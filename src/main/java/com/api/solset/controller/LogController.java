@@ -17,11 +17,12 @@ public class LogController {
     private LogService logService;
 
     @GetMapping("/full")
-    public ResponseEntity<List<Log>> findAll(@RequestParam(value = "requestToken", required = false) String requestToken) {
+    public ResponseEntity<List<Log>> findAll(@RequestParam(required = false) String requestToken,
+                                             @RequestParam String masterName) {
         if (requestToken != null) {
             return ResponseEntity.ok(logService.findByRequestToken(requestToken));
         } else {
-            return ResponseEntity.ok(logService.listAll());
+            return ResponseEntity.ok(logService.findByMasterName(masterName));
         }
     }
 

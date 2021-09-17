@@ -1,11 +1,8 @@
 package com.api.solset.service;
 
-import com.api.solset.dto.BudgetResponseDTO;
 import com.api.solset.dto.ProposalRequestDTO;
 import com.api.solset.dto.ProposalResponseDTO;
-import com.api.solset.mapper.BudgetMapper;
 import com.api.solset.mapper.ProposalMapper;
-import com.api.solset.model.Budget;
 import com.api.solset.model.Proposal;
 import com.api.solset.repository.ProposalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +49,15 @@ public class ProposalService {
         return proposalResponseDTOList;
     }
 
-    public List<ProposalResponseDTO> listAllWithRelationship(){
+    public List<ProposalResponseDTO> listAllWithRelationship(String masterName){
         List<ProposalResponseDTO> proposalResponseDTOList = new ArrayList<>();
-        for (Proposal proposal : proposalRepository.findAll()){
+        List<Proposal> proposalList = null;
+        if (masterName.equals("ALL")) {
+            proposalList = proposalRepository.findAll();
+        }else{
+            proposalList = proposalRepository.findByMasterName(masterName);
+        }
+        for (Proposal proposal : proposalList){
             ProposalResponseDTO proposalResponseDTO = ProposalMapper.INSTANCE.toBudgetResponseDTO(proposal);
             proposalResponseDTO.setBudget(budgetService.findByIdOrElseThrow(proposal.getBudgetId()));
             proposalResponseDTO.setClient(clientService.findByIdOrElseThrow(proposalResponseDTO.getBudget().getClientId()));

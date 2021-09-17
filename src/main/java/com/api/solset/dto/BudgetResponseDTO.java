@@ -33,4 +33,5 @@ public class BudgetResponseDTO {
     private String financingCnpj;
     private String financingCpf;
     private String birthDate;
+    private String masterName;
 }

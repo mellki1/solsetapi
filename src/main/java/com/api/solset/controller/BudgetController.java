@@ -23,11 +23,12 @@ public class BudgetController {
     private FireBaseService fireBaseService;
 
     @GetMapping("/full")
-    public ResponseEntity<List<BudgetResponseDTO>> findAllWithRelationship(@RequestParam(name = "requestToken", required = false) String requestToken) {
+    public ResponseEntity<List<BudgetResponseDTO>> findAllWithRelationship(@RequestParam(required = false) String requestToken,
+                                                                           @RequestParam String masterName) {
         if (requestToken != null) {
             return ResponseEntity.ok(budgetService.findByUserRequestToken(requestToken));
         } else {
-            return ResponseEntity.ok(budgetService.findAllWithRelationship());
+            return ResponseEntity.ok(budgetService.findAllWithRelationship(masterName));
         }
     }
 
