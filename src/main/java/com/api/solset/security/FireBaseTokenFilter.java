@@ -22,25 +22,27 @@ public class FireBaseTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String authenticationHeader = request.getHeader("Authorization");
 
-        //checks if token is there
         if (authenticationHeader == null || !authenticationHeader.startsWith("Bearer "))
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Missing token!");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Missing token!");
 
         FirebaseToken decodedToken = null;
         try {
-            //Extracts token from header
             String token = authenticationHeader.substring(7, authenticationHeader.length());
-            //verifies token to firebase server
             decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(decodedToken, token, new ArrayList<>());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             chain.doFilter(request,response);
         }
         catch (FirebaseAuthException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Error! "+e.toString());
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            String responseMessage = "{\"error\":\"" + e.getMessage().replace("\"", "'") + "\"}";
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(responseMessage);
+            response.getWriter().flush();
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Error! "+e.toString());
         }
 
-        //if token is invalid
         if (decodedToken==null){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Invalid token!");
         }
