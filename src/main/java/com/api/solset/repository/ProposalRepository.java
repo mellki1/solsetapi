@@ -10,7 +10,5 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 
     List<Proposal> findByRequestToken(String requestToken);
 
-    void deleteByBudgetId(Long proposalId);
-
     List<Proposal> findByMasterName(String masterName);
 }

@@ -61,23 +61,20 @@ public class ClientService {
     }
 
     public Client findByIdOrElseThrow(Long id){
-        return clientRepository.findById(id)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
+        return clientRepository.findById(id).orElse(new Client());
     }
 
 
     public ClientResponseDTO findByIdOrElseThrowDto(Long id){
         if (id != null){
-            Client client = clientRepository.findById(id)
-                    .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
+            Client client = clientRepository.findById(id).orElse(new Client());
             return ClientMapper.INSTANCE.toClientResponseDTO(client);
         }
         return new ClientResponseDTO();
     }
 
     public ClientResponseDTO findByIdOrElseThrowWithRelationship(Long id){
-        Client client = clientRepository.findById(id)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
+        Client client = clientRepository.findById(id).orElse(new Client());
         ClientResponseDTO clientResponseDTO = ClientMapper.INSTANCE.toClientResponseDTO(client);
         clientResponseDTO.setBudgetResponseDTOList(budgetService.findByClientId(clientResponseDTO.getId()));
         clientResponseDTO.setLogResponseDTOList(logService.findByClientIdOrElseThrow(client.getId()));

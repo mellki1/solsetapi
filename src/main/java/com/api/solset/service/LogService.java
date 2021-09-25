@@ -28,8 +28,7 @@ public class LogService {
     }
 
     public Log findByIdOrElseThrow(Long id){
-        return logRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Log not found"));
+        return logRepository.findById(id).orElse(null);
     }
 
     public List<Log> findByClientIdOrElseThrow(Long clientId){

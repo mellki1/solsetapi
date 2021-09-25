@@ -62,8 +62,7 @@ public class BudgetService {
     }
 
     public Budget findByIdOrElseThrow(Long id){
-        return budgetRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Budget not found"));
+        return budgetRepository.findById(id).orElse(new Budget());
     }
 
     public List<BudgetResponseDTO> findByClientId(Long clientId){

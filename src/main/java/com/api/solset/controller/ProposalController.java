@@ -23,7 +23,7 @@ public class ProposalController {
     private FireBaseService fireBaseService;
 
     @GetMapping("/full")
-    public ResponseEntity<List<ProposalResponseDTO>> findAllWithRelationship(@RequestParam(required = false) String requestToken,
+    public ResponseEntity<List<ProposalResponseDTO>> findAllWithRelationship(@RequestParam(required = false, value = "requestToken") String requestToken,
                                                                              @RequestParam String masterName) {
         if (requestToken != null) {
             return ResponseEntity.ok(proposalService.findByRequestToken(requestToken));
