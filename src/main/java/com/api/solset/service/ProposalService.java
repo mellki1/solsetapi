@@ -42,7 +42,12 @@ public class ProposalService {
         for (Proposal proposal : proposalRepository.findByRequestToken(requestToken)) {
             ProposalResponseDTO proposalResponseDTO = ProposalMapper.INSTANCE.toBudgetResponseDTO(proposal);
             proposalResponseDTO.setBudget(budgetService.findByIdOrElseThrow(proposal.getBudgetId()));
-            proposalResponseDTO.setClient(clientService.findByIdOrElseThrow(proposalResponseDTO.getBudget().getClientId()));
+            Long clientId = proposalResponseDTO.getBudget() != null ? proposalResponseDTO.getBudget().getClientId() : null;
+            if (clientId != null) {
+                proposalResponseDTO.setClient(clientService.findByIdOrElseThrow(proposalResponseDTO.getBudget().getClientId()));
+            } else {
+                proposalResponseDTO.setClient(new Client());
+            }
             proposalResponseDTOList.add(proposalResponseDTO);
         }
         return proposalResponseDTOList;
