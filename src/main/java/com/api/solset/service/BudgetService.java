@@ -89,8 +89,8 @@ public class BudgetService {
     }
 
     public void delete(Long id){
-        budgetRepository.deleteById(id);
         proposalService.deleteByBudgetId(id);
+        budgetRepository.deleteById(id);
     }
 
     public void deleteByClientId(Long clientId){
